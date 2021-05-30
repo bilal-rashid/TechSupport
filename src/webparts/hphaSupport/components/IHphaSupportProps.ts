@@ -1,9 +1,12 @@
 import {WebPartContext} from "@microsoft/sp-webpart-base";
 export interface IHphaSupportProps {
-  equipment: string;
+  firstCategory: string;
+  secondCategory: string;
+  thirdCategory: string;
   issues: string;
-  first: string;
-  second: string;
+  firstSupport: string;
+  secondSupport: string;
   tips: string;
+  link: string;
   context: WebPartContext;
 }

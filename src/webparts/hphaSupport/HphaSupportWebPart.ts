@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
-  IPropertyPaneConfiguration,
+  IPropertyPaneConfiguration, PropertyPaneCheckbox,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
@@ -13,11 +13,14 @@ import { IHphaSupportProps } from './components/IHphaSupportProps';
 import { default as pnp } from "sp-pnp-js";
 
 export interface IHphaSupportWebPartProps {
-  equipment: string;
+  firstCategory: string;
+  secondCategory: string;
+  thirdCategory: string;
   issues: string;
-  first: string;
-  second: string;
+  firstSupport: string;
+  secondSupport: string;
   tips: string;
+  link: string;
 }
 
 export default class HphaSupportWebPart extends BaseClientSideWebPart<IHphaSupportWebPartProps> {
@@ -35,13 +38,15 @@ export default class HphaSupportWebPart extends BaseClientSideWebPart<IHphaSuppo
     const element: React.ReactElement<IHphaSupportProps> = React.createElement(
       HphaSupport,
       {
-        equipment: (this.properties.equipment) ? this.properties.equipment : 'Choose Your Equipment',
+        firstCategory: (this.properties.firstCategory) ? this.properties.firstCategory : 'Primary Category',
+        secondCategory: (this.properties.secondCategory) ? this.properties.secondCategory : 'Secondary Category',
+        thirdCategory: (this.properties.thirdCategory) ? this.properties.thirdCategory : 'Third Category',
         issues: (this.properties.issues) ? this.properties.issues : 'What issue are you having?',
-        first: (this.properties.first) ? this.properties.first : 'Who to Call 1st ?',
-        second: (this.properties.second) ? this.properties.second : 'Who to Call 2nd ?',
+        firstSupport: (this.properties.firstSupport) ? this.properties.firstSupport : 'How to get help ?',
+        secondSupport: (this.properties.secondSupport) ? this.properties.secondSupport : 'Backup Department',
         tips: (this.properties.tips) ? this.properties.tips : 'Troubleshooting Tips',
-        context: this.context
-      }
+        link: this.properties.link,
+        context: this.context}
     );
 
     ReactDom.render(element, this.domElement);
@@ -66,20 +71,29 @@ export default class HphaSupportWebPart extends BaseClientSideWebPart<IHphaSuppo
             {
               groupName: 'Configurable Labels',
               groupFields: [
-                PropertyPaneTextField('equipment', {
-                  label: 'Equipment Label'
+                PropertyPaneTextField('firstCategory', {
+                  label: 'First Category Label'
+                }),
+                PropertyPaneTextField('secondCategory', {
+                  label: 'Second Category Label'
+                }),
+                PropertyPaneTextField('thirdCategory', {
+                  label: 'Third Category Label'
                 }),
                 PropertyPaneTextField('issues', {
-                  label: 'Issues Label'
+                  label: 'Specific Issues Label'
                 }),
-                PropertyPaneTextField('first', {
-                  label: 'First Tier Label'
+                PropertyPaneTextField('firstSupport', {
+                  label: 'First Tier Support Label'
                 }),
-                PropertyPaneTextField('second', {
-                  label: '2nd Tier Label'
+                PropertyPaneTextField('secondSupport', {
+                  label: '2nd Tier Support Label'
                 }),
                 PropertyPaneTextField('tips', {
-                  label: 'Tips Label'
+                  label: 'TroubleShooting Tips Label'
+                }),
+                PropertyPaneTextField('link', {
+                  label: 'Help Link Label'
                 })
               ]
             }
