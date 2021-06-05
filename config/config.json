@@ -13,6 +13,7 @@
   },
   "externals": {},
   "localizedResources": {
-    "HphaSupportWebPartStrings": "lib/webparts/hphaSupport/loc/{locale}.js"
+    "HphaSupportWebPartStrings": "lib/webparts/hphaSupport/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/en-us.js"
   }
 }

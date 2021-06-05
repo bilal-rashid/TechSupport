@@ -9,4 +9,7 @@ export interface IHphaSupportProps {
   tips: string;
   link: string;
   context: WebPartContext;
+  colorBackground: string;
+  colorHeader: string;
+  colorLightBackground: string;
 }

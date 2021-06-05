@@ -11,7 +11,6 @@ import * as strings from 'HphaSupportWebPartStrings';
 import HphaSupport from './components/HphaSupport';
 import { IHphaSupportProps } from './components/IHphaSupportProps';
 import { default as pnp } from "sp-pnp-js";
-
 export interface IHphaSupportWebPartProps {
   firstCategory: string;
   secondCategory: string;
@@ -21,12 +20,72 @@ export interface IHphaSupportWebPartProps {
   secondSupport: string;
   tips: string;
   link: string;
+  colorBackground: string;
+  colorHeader: string;
+  colorLightBackground: string;
 }
-
+var colorPickerBackground = null;
+var colorPickerLightBackground = null;
+var colorPickerHeader = null;
+// "https://hpeits.sharepoint.com/sites/IMPACT/SiteAssets/hphasupport/"
 export default class HphaSupportWebPart extends BaseClientSideWebPart<IHphaSupportWebPartProps> {
 
   protected onInit(): Promise<void> {
 
+    const dynamicLibImport = import(
+      /* webpackChunkName: 'CommonLibraryLibrary' */
+      '@pnp/spfx-property-controls/lib/PropertyFieldColorPicker'
+      ).then(lib => {
+      const isChrome = !!window['chrome'] && (!!window['chrome'].webstore || !!window['chrome'].runtime);
+      if (isChrome) {
+        colorPickerHeader = lib.PropertyFieldColorPicker('colorHeader',{
+          label: 'Header Color',
+          selectedColor: this.properties.colorHeader,
+          onPropertyChange: this.onPropertyPaneFieldChanged,
+          properties: this.properties,
+          disabled: false,
+          isHidden: false,
+          alphaSliderHidden: false,
+          style: 1,
+          iconName: 'Precipitation',
+          key: 'colorFieldId'
+        });
+        colorPickerBackground = lib.PropertyFieldColorPicker('colorBackground',{
+          label: 'Background Color',
+          selectedColor: this.properties.colorBackground,
+          onPropertyChange: this.onPropertyPaneFieldChanged,
+          properties: this.properties,
+          disabled: false,
+          isHidden: false,
+          alphaSliderHidden: false,
+          style: 1,
+          iconName: 'Precipitation',
+          key: 'colorFieldId'
+        });
+        colorPickerLightBackground = lib.PropertyFieldColorPicker('colorLightBackground',{
+          label: 'Light Background Color',
+          selectedColor: this.properties.colorLightBackground,
+          onPropertyChange: this.onPropertyPaneFieldChanged,
+          properties: this.properties,
+          disabled: false,
+          isHidden: false,
+          alphaSliderHidden: false,
+          style: 1,
+          iconName: 'Precipitation',
+          key: 'colorFieldId'
+        });
+      } else {
+        colorPickerHeader = PropertyPaneTextField('colorHeader', {
+          label: 'Header Color'
+        });
+        colorPickerLightBackground = PropertyPaneTextField('colorBackground', {
+          label: 'Background Color'
+        });
+        colorPickerBackground = PropertyPaneTextField('colorLightBackground', {
+          label: 'Light Background Color'
+        });
+      }
+    });
     return super.onInit().then(_ => {
       // other init code may be present
       pnp.setup({
@@ -46,7 +105,11 @@ export default class HphaSupportWebPart extends BaseClientSideWebPart<IHphaSuppo
         secondSupport: (this.properties.secondSupport) ? this.properties.secondSupport : 'Backup Department',
         tips: (this.properties.tips) ? this.properties.tips : 'Troubleshooting Tips',
         link: this.properties.link,
-        context: this.context}
+        context: this.context,
+        colorHeader: this.properties.colorHeader,
+        colorBackground: this.properties.colorBackground,
+        colorLightBackground: this.properties.colorLightBackground
+      }
     );
 
     ReactDom.render(element, this.domElement);
@@ -94,7 +157,10 @@ export default class HphaSupportWebPart extends BaseClientSideWebPart<IHphaSuppo
                 }),
                 PropertyPaneTextField('link', {
                   label: 'Help Link Label'
-                })
+                }),
+                colorPickerHeader,
+                colorPickerBackground,
+                colorPickerLightBackground
               ]
             }
           ]

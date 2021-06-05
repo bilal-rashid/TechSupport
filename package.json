@@ -20,7 +20,8 @@
     "@microsoft/sp-webpart-base": "1.11.0",
     "@microsoft/sp-lodash-subset": "1.11.0",
     "@microsoft/sp-office-ui-fabric-core": "1.11.0",
-    "sp-pnp-js": "^3.0.10"
+    "sp-pnp-js": "^3.0.10",
+    "@pnp/spfx-property-controls": "^2.6.0"
   },
   "devDependencies": {
     "@types/react": "16.8.8",

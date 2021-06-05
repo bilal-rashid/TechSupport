@@ -1,4 +1,4 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/write-manifests.schema.json",
-  "cdnBasePath": "https://hpeits.sharepoint.com/sites/IMPACT/SiteAssets/hphasupport/"
+  "cdnBasePath": "https://slickwhiz.sharepoint.com/sites/bilal.developer/SiteAssets/mytest/"
 }
