@@ -9,6 +9,9 @@ export interface IHphaSupportState {
   selectedScenario: string|number;
   resultRecord: any;
   items: any[];
+  searchResults: any[];
+  showSearchResults: boolean;
+  stringItems: any[];
   uniqueTitles: any[];
   filteredScenario: any[];
   filteredSecondCategory: any[];

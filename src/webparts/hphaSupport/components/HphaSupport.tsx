@@ -4,14 +4,14 @@ import { IHphaSupportProps } from './IHphaSupportProps';
 import { escape } from '@microsoft/sp-lodash-subset';
 import { default as pnp } from "sp-pnp-js";
 import {IHphaSupportState} from "./IHphaSupportState";
-import {DefaultButton, PrimaryButton, IStackTokens, IIconProps, ActionButton} from 'office-ui-fabric-react';
+import {DefaultButton, PrimaryButton, IStackTokens, IIconProps, ActionButton, List} from 'office-ui-fabric-react';
 import { TextField, ITextFieldStyles } from 'office-ui-fabric-react/lib/TextField';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import {  MessageBar,
   MessageBarType } from 'office-ui-fabric-react';
+import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
 import { Dropdown, DropdownMenuItemType, IDropdownOption, IDropdownStyles } from 'office-ui-fabric-react/lib/Dropdown';
-
 const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 300 } };
 const textFieldStyles: Partial<ITextFieldStyles> = { fieldGroup: { width: 400 } };
 const stackTokens = { childrenGap: 15 };
@@ -21,8 +21,118 @@ const refreshIcon: IIconProps = { iconName: 'Refresh' };
 const ListTitle = 'MyList';
 const AdminTitle = 'john.brennan@hpha';
 // const AdminTitle = 'bilal.rashid@slickwhiz';
+var customStyles = {
+  tableHeader:{background: '#5B9BD5',
+    display: 'table-cell',
+    padding: 5,
+    width:200,
+    color:'#fff',
+    fontWeight:700,
+    borderRight: '1px solid #5B9BD5',
+    borderLeft: '1px solid #5B9BD5'},
+  tableHeader2:{background: '#5B9BD5',
+    display: 'table-cell',
+    padding: 5,
+    width:399,
+    color:'#fff',
+    fontWeight:700,
+    borderRight: '1px solid #5B9BD5',
+    borderLeft: '1px solid #5B9BD5'},
+  colorTableCellKey: {background: '#DEEAF6',
+    display: 'table-cell',
+    padding: 5,
+    width:200,
+    fontWeight:600,
+    borderRight: '1px solid #5B9BD5',
+    borderLeft: '1px solid #5B9BD5'},
+  colorTableCellValue: {background: '#DEEAF6',
+    display: 'table-cell',
+    padding: 5,
+    width:400,
+    fontWeight:600,
+    borderRight: '1px solid #5B9BD5'},
+  whiteTableCellKey: {background: '#fff',
+    display: 'table-cell',
+    padding: 5,
+    width:200,
+    fontWeight:600,
+    borderRight: '1px solid #5B9BD5',
+    borderLeft: '1px solid #5B9BD5'},
+  whiteTableCellValue: {background: '#fff',
+    display: 'table-cell',
+    padding: 5,
+    width:400,
+    fontWeight:600,
+    borderRight: '1px solid #5B9BD5'},
+  line:{height:1,width:623,
+    background: '#5B9BD5'}
+};
 export default class HphaSupport extends React.Component<IHphaSupportProps, IHphaSupportState> {
 
+  public onRenderCell = (item: any, index: number | undefined): JSX.Element => {
+    return (
+      <div style={{display:'table', marginTop:20}}>
+        <div>
+          <div style={customStyles.tableHeader}>
+            1
+          </div>
+          <div style={customStyles.tableHeader2}>
+          </div>
+        </div>
+        <div>
+          <div style={customStyles.colorTableCellKey}>
+            Primary Category
+          </div>
+          <div style={customStyles.colorTableCellValue}>
+            Printers
+          </div>
+        </div>
+        <div>
+          <div style={customStyles.colorTableCellKey}>
+            Primary Category
+          </div>
+          <div style={customStyles.colorTableCellValue}>
+            Printers
+          </div>
+        </div>
+        <div>
+          <div style={customStyles.colorTableCellKey}>
+            Primary Category
+          </div>
+          <div style={customStyles.colorTableCellValue}>
+            Printers
+          </div>
+        </div>
+        <div style={customStyles.line}></div>
+        <div>
+          <div style={customStyles.whiteTableCellKey}>
+            Primary Category
+          </div>
+          <div style={customStyles.whiteTableCellValue}>
+            Printers
+          </div>
+        </div>
+        <div>
+          <div style={customStyles.whiteTableCellKey}>
+            Primary Category
+          </div>
+          <div style={customStyles.whiteTableCellValue}>
+            Printers
+          </div>
+        </div>
+        <div style={customStyles.line}></div>
+        <div>
+          <div style={customStyles.colorTableCellKey}>
+            Primary Category
+          </div>
+          <div style={customStyles.colorTableCellValue}>
+            Printers
+          </div>
+        </div>
+        <div style={customStyles.line}></div>
+      </div>
+    );
+  }
   public componentDidMount(): void {
     this.setState({errorConfig: false, loading: false});
     this.getData();
@@ -57,9 +167,17 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
         if (a.text > b.text) { return 1; }
         return 0;
       });
-      this.setState({selectedTitle: item.key, selectedSecondCategory: null, filteredSecondCategory:[],
+      this.setState({showSearchResults:false,selectedTitle: item.key, selectedSecondCategory: null, filteredSecondCategory:[],
       selectedThirdCategory:null, filteredThirdCategory:null,selectedScenario:null, filteredScenario:null,resultRecord:null});
       setTimeout(() => {  this.setState({filteredSecondCategory:array});},  100);
+    }
+  }
+  public componentDidUpdate(prevProps) {
+    if (prevProps.colorLightBackground !== this.props.colorLightBackground ||
+      prevProps.colorBackground !== this.props.colorBackground ||
+      prevProps.colorHeader !== this.props.colorHeader) {
+      let searchItems = this.state.searchResults.filter(p => p.Id !== -1);
+      this.setState({searchResults: searchItems});
     }
   }
   public onChangeSecondCategory = (event: React.FormEvent<HTMLDivElement>, item: IDropdownOption): void => {
@@ -118,7 +236,7 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
         this.setState({showDataUpload: true});
       }
     });
-    pnp.sp.web.lists.getByTitle(ListTitle).items.top(20000).select(
+    pnp.sp.web.lists.getByTitle(ListTitle).items.top(4000).select(
       "Title","SecondaryCategory","ThirdCategory","SpecificIssue","TroubleshootingTips","FirstTierSupport","SecondTierSupport","LinkToSupportMaterial", "Id").
     get().then(items => {
       let array = [];
@@ -133,7 +251,15 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
         if (a.text > b.text) { return 1; }
         return 0;
       });
-      this.setState({items: items, uniqueTitles: array,resultRecord:null,errorConfig:false});
+      let stringArray = [];
+      if (items && items.length > 0) {
+        items.forEach(item => {
+          stringArray.push({id: item.Id ,text: '' + item.Title + '   ' + item.SecondaryCategory + '   ' + item.ThirdCategory + '   '
+              + item.SpecificIssue + '   ' + item.TroubleshootingTips + '   ' + item.FirstTierSupport + '   '
+              + item.SecondTierSupport + '   ' + item.LinkToSupportMaterial});
+        });
+      }
+      this.setState({stringItems: stringArray,items: items, uniqueTitles: array,resultRecord:null,errorConfig:false});
     }).catch(error => {
       this.setState({errorConfig: true});
     });
@@ -149,25 +275,77 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
     (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
     this.setState({jsonArray: newValue || ''});
   }
+  public onSearch = (newValue) => {
+    if (newValue && newValue.length > 1) {
+      const results = this.state.stringItems.filter(p => p.text.toLowerCase().indexOf(newValue.toLowerCase()) !== -1);
+      let ids = [];
+      results.forEach(result => {
+        ids.push(result.id);
+      });
+      let searchItems = this.state.items.filter(p => ids.indexOf(p.Id) !== -1);
+      this.setState({showSearchResults:true,searchResults: searchItems,selectedTitle: null, selectedSecondCategory: null, filteredSecondCategory:[],
+        selectedThirdCategory:null, filteredThirdCategory:null,selectedScenario:null, filteredScenario:null,resultRecord:null});
+    }
+  }
+  public refreshStyles = () => {
+    customStyles = {
+      tableHeader:{background: this.props.colorHeader,
+        display: 'table-cell',
+        padding: 5,
+        width:200,
+        color:'#fff',
+        fontWeight:700,
+        borderRight: '1px solid '+this.props.colorHeader,
+        borderLeft: '1px solid '+this.props.colorHeader},
+      tableHeader2:{background: this.props.colorHeader,
+        display: 'table-cell',
+        padding: 5,
+        width:399,
+        color:'#fff',
+        fontWeight:700,
+        borderRight: '1px solid '+this.props.colorHeader,
+        borderLeft: '1px solid '+this.props.colorHeader},
+      colorTableCellKey: {background: this.props.colorBackground,
+        display: 'table-cell',
+        padding: 5,
+        width:200,
+        fontWeight:600,
+        borderRight: '1px solid '+this.props.colorHeader,
+        borderLeft: '1px solid '+this.props.colorHeader},
+      colorTableCellValue: {background: this.props.colorBackground,
+        display: 'table-cell',
+        padding: 5,
+        width:400,
+        fontWeight:600,
+        borderRight: '1px solid '+this.props.colorHeader},
+      whiteTableCellKey: {background: this.props.colorLightBackground,
+        display: 'table-cell',
+        padding: 5,
+        width:200,
+        fontWeight:600,
+        borderRight: '1px solid '+this.props.colorHeader,
+        borderLeft: '1px solid '+this.props.colorHeader},
+      whiteTableCellValue: {background: this.props.colorLightBackground,
+        display: 'table-cell',
+        padding: 5,
+        width:400,
+        fontWeight:600,
+        borderRight: '1px solid '+this.props.colorHeader},
+      line:{height:1,width:623,
+        background: this.props.colorHeader}
+    };
+  }
   public render(): React.ReactElement<IHphaSupportProps> {
     console.log('STATE',this.state);
+    this.refreshStyles();
     return (
     <Stack tokens={stackTokens}>
       {
         (this.state && !this.state.errorConfig)?
         <div>
-          <Stack horizontal={false} tokens={stackTokens}>
-            <Stack horizontal={false} tokens={{ childrenGap: 0 }}>
-              {/*<ActionButton iconProps={addFriendIcon} allowDisabledFocus  checked={true}>*/}
-              {/*  Clear*/}
-              {/*</ActionButton>*/}
-              {/*<DefaultButton*/}
-              {/*  toggle*/}
-              {/*  text={'Clear'}*/}
-              {/*  style={{width:100}}*/}
-              {/*  iconProps={refreshIcon}*/}
-              {/*  allowDisabledFocus*/}
-              {/*/>*/}
+          <Stack horizontal={true} tokens={{ childrenGap: 40 }}>
+            <Stack horizontal={false} tokens={stackTokens}>
+              <Label style={{fontWeight:'bold', fontSize:14}}>Use Fields Below to narrow down your issue</Label>
               <Dropdown
                 notifyOnReselect = {true}
                 label={this.props.firstCategory}
@@ -177,34 +355,41 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
                 options={this.state && this.state.uniqueTitles && this.state.uniqueTitles.length > 0 ? this.state.uniqueTitles : []}
                 styles={dropdownStyles}
               />
+              {(this.state && this.state.filteredSecondCategory && this.state.filteredSecondCategory.length > 0)&&<Dropdown
+                notifyOnReselect = {true}
+                label={this.props.secondCategory}
+                selectedKey={this.state && this.state.selectedSecondCategory ? this.state.selectedSecondCategory : undefined}
+                onChange={this.onChangeSecondCategory}
+                placeholder="Select an option"
+                options={this.state && this.state.filteredSecondCategory && this.state.filteredSecondCategory.length > 0 ? this.state.filteredSecondCategory : []}
+                styles={dropdownStyles}
+              />}
+              {(this.state && this.state.filteredThirdCategory && this.state.filteredThirdCategory.length > 0 )&&<Dropdown
+                notifyOnReselect = {true}
+                label={this.props.thirdCategory}
+                selectedKey={this.state && this.state.selectedThirdCategory ? this.state.selectedThirdCategory : undefined}
+                onChange={this.onChangeThirdCategory}
+                placeholder="Select an option"
+                options={this.state && this.state.filteredThirdCategory && this.state.filteredThirdCategory.length > 0 ? this.state.filteredThirdCategory : []}
+                styles={dropdownStyles}
+              />}
+              {(this.state && this.state.filteredScenario && this.state.filteredScenario.length > 0)&&<Dropdown
+                notifyOnReselect = {true}
+                label={this.props.issues}
+                selectedKey={this.state && this.state.selectedScenario ? this.state.selectedScenario : null}
+                onChange={this.onChangeScenario}
+                placeholder="Select an option"
+                options={this.state && this.state.filteredScenario && this.state.filteredScenario.length > 0 ? this.state.filteredScenario : []}
+                styles={dropdownStyles}
+              />}
             </Stack>
-            {(this.state && this.state.filteredSecondCategory && this.state.filteredSecondCategory.length > 0)&&<Dropdown
-              notifyOnReselect = {true}
-              label={this.props.secondCategory}
-              selectedKey={this.state && this.state.selectedSecondCategory ? this.state.selectedSecondCategory : undefined}
-              onChange={this.onChangeSecondCategory}
-              placeholder="Select an option"
-              options={this.state && this.state.filteredSecondCategory && this.state.filteredSecondCategory.length > 0 ? this.state.filteredSecondCategory : []}
-              styles={dropdownStyles}
-            />}
-            {(this.state && this.state.filteredThirdCategory && this.state.filteredThirdCategory.length > 0 )&&<Dropdown
-              notifyOnReselect = {true}
-              label={this.props.thirdCategory}
-              selectedKey={this.state && this.state.selectedThirdCategory ? this.state.selectedThirdCategory : undefined}
-              onChange={this.onChangeThirdCategory}
-              placeholder="Select an option"
-              options={this.state && this.state.filteredThirdCategory && this.state.filteredThirdCategory.length > 0 ? this.state.filteredThirdCategory : []}
-              styles={dropdownStyles}
-            />}
-            {(this.state && this.state.filteredScenario && this.state.filteredScenario.length > 0)&&<Dropdown
-              notifyOnReselect = {true}
-              label={this.props.issues}
-              selectedKey={this.state && this.state.selectedScenario ? this.state.selectedScenario : null}
-              onChange={this.onChangeScenario}
-              placeholder="Select an option"
-              options={this.state && this.state.filteredScenario && this.state.filteredScenario.length > 0 ? this.state.filteredScenario : []}
-              styles={dropdownStyles}
-            />}
+            <Label style={{fontWeight:'bold', fontSize:17, marginTop:70}}>OR</Label>
+            <Stack horizontal={false} tokens={stackTokens}>
+              <Label style={{fontWeight:'bold', fontSize:14}}>Use Keywords to find your solution</Label>
+              <div style={{marginTop:42}}>
+                <SearchBox style={{width:270}} placeholder="Search" onSearch={this.onSearch} />
+              </div>
+            </Stack>
           </Stack>
           {
             (this.state && this.state.resultRecord)?
@@ -224,6 +409,20 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
                 {/*{(this.state.resultRecord.OtherDetails)&&<Label style={{fontSize:21}}>{this.state.resultRecord.OtherDetails}</Label>}*/}
               </Stack>:null
           }
+          {(this.state && this.state.showSearchResults) &&
+          <Stack tokens={stackTokens}>
+            {(this.state.searchResults.length > 0) ?
+              <List
+                onShouldVirtualize = {()=>false}
+                items={this.state.searchResults}
+                onRenderCell={this.onRenderCell} /> :
+              <div style={{marginTop:20}}>
+                <MessageBar
+                  messageBarType={MessageBarType.error}>
+                  Your search did not match any results
+                </MessageBar>
+              </div>}
+          </Stack>}
           {
             (this.state && this.state.showDataUpload) &&
             <Stack tokens={stackTokens}>
