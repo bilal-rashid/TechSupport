@@ -104,7 +104,7 @@ export default class HphaSupportWebPart extends BaseClientSideWebPart<IHphaSuppo
         firstSupport: (this.properties.firstSupport) ? this.properties.firstSupport : 'How to get help ?',
         secondSupport: (this.properties.secondSupport) ? this.properties.secondSupport : 'Backup Department',
         tips: (this.properties.tips) ? this.properties.tips : 'Troubleshooting Tips',
-        link: this.properties.link,
+        link: (this.properties.link) ? this.properties.link : 'Link to Support material',
         context: this.context,
         colorHeader:(this.properties.colorHeader) ?  this.properties.colorHeader: '#5B9BD5',
         colorBackground: (this.properties.colorBackground) ? this.properties.colorBackground : '#DEEAF6',

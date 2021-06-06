@@ -1,17 +1,16 @@
 import * as React from 'react';
 import styles from './HphaSupport.module.scss';
 import { IHphaSupportProps } from './IHphaSupportProps';
-import { escape } from '@microsoft/sp-lodash-subset';
 import { default as pnp } from "sp-pnp-js";
 import {IHphaSupportState} from "./IHphaSupportState";
-import {DefaultButton, PrimaryButton, IStackTokens, IIconProps, ActionButton, List} from 'office-ui-fabric-react';
+import { PrimaryButton, IIconProps, List} from 'office-ui-fabric-react';
 import { TextField, ITextFieldStyles } from 'office-ui-fabric-react/lib/TextField';
 import { Stack } from 'office-ui-fabric-react/lib/Stack';
 import { Label } from 'office-ui-fabric-react/lib/Label';
 import {  MessageBar,
   MessageBarType } from 'office-ui-fabric-react';
 import { SearchBox } from 'office-ui-fabric-react/lib/SearchBox';
-import { Dropdown, DropdownMenuItemType, IDropdownOption, IDropdownStyles } from 'office-ui-fabric-react/lib/Dropdown';
+import { Dropdown, IDropdownOption, IDropdownStyles } from 'office-ui-fabric-react/lib/Dropdown';
 const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 300 } };
 const textFieldStyles: Partial<ITextFieldStyles> = { fieldGroup: { width: 400 } };
 const stackTokens = { childrenGap: 15 };
@@ -74,59 +73,77 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
       <div style={{display:'table', marginTop:20}}>
         <div>
           <div style={customStyles.tableHeader}>
-            1
+            {index+1}
           </div>
           <div style={customStyles.tableHeader2}>
           </div>
         </div>
         <div>
           <div style={customStyles.colorTableCellKey}>
-            Primary Category
+            {this.props.firstCategory}
           </div>
           <div style={customStyles.colorTableCellValue}>
-            Printers
+            {item.Title}
           </div>
         </div>
         <div>
           <div style={customStyles.colorTableCellKey}>
-            Primary Category
+            {this.props.secondCategory}
           </div>
           <div style={customStyles.colorTableCellValue}>
-            Printers
+            {item.SecondaryCategory}
           </div>
         </div>
         <div>
           <div style={customStyles.colorTableCellKey}>
-            Primary Category
+            {this.props.thirdCategory}
           </div>
           <div style={customStyles.colorTableCellValue}>
-            Printers
+            {item.ThirdCategory}
+          </div>
+        </div>
+        <div>
+          <div style={customStyles.colorTableCellKey}>
+            {this.props.issues}
+          </div>
+          <div style={customStyles.colorTableCellValue}>
+            {item.SpecificIssue}
           </div>
         </div>
         <div style={customStyles.line}></div>
         <div>
           <div style={customStyles.whiteTableCellKey}>
-            Primary Category
+            {this.props.tips}
           </div>
           <div style={customStyles.whiteTableCellValue}>
-            Printers
+            {item.TroubleshootingTips}
           </div>
         </div>
         <div>
           <div style={customStyles.whiteTableCellKey}>
-            Primary Category
+            {this.props.firstSupport}
           </div>
           <div style={customStyles.whiteTableCellValue}>
-            Printers
+            {item.FirstTierSupport}
+          </div>
+        </div>
+        <div>
+          <div style={customStyles.whiteTableCellKey}>
+            {this.props.secondSupport}
+          </div>
+          <div style={customStyles.whiteTableCellValue}>
+            {item.SecondTierSupport}
           </div>
         </div>
         <div style={customStyles.line}></div>
         <div>
           <div style={customStyles.colorTableCellKey}>
-            Primary Category
+            {this.props.link}
           </div>
           <div style={customStyles.colorTableCellValue}>
-            Printers
+            {(item.LinkToSupportMaterial && item.LinkToSupportMaterial.indexOf('http') !== -1)?
+              <a href={item.LinkToSupportMaterial} target={'_blank'}>{item.LinkToSupportMaterial}</a>:
+            null}
           </div>
         </div>
         <div style={customStyles.line}></div>
@@ -134,7 +151,7 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
     );
   }
   public componentDidMount(): void {
-    this.setState({errorConfig: false, loading: false});
+    this.setState({errorConfig: false, loading: false, showSearchResults:false,showSuccess:false});
     this.getData();
   }
   public populteData = () => {
@@ -404,7 +421,7 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
                 <Label style={{fontSize:21}}>{this.state.resultRecord.SecondTier}</Label>
                 <br/>
                 {(this.state.resultRecord.LinkToSupportMaterial && this.state.resultRecord.LinkToSupportMaterial.includes('http')) && <Label disabled>{this.props.link}</Label>}
-                {(this.state.resultRecord.LinkToSupportMaterial && this.state.resultRecord.LinkToSupportMaterial.includes('http')) && <Label><a href={this.state.resultRecord.LinkToSupportMaterial}>this.state.resultRecord.LinkToSupportMaterial</a ></Label>}
+                {(this.state.resultRecord.LinkToSupportMaterial && this.state.resultRecord.LinkToSupportMaterial.includes('http')) && <Label><a target={'_blank'} href={this.state.resultRecord.LinkToSupportMaterial}>{this.state.resultRecord.LinkToSupportMaterial}</a ></Label>}
                 {/*{(this.state.resultRecord.OtherDetails)&&<Label disabled>Other Details</Label>}*/}
                 {/*{(this.state.resultRecord.OtherDetails)&&<Label style={{fontSize:21}}>{this.state.resultRecord.OtherDetails}</Label>}*/}
               </Stack>:null
