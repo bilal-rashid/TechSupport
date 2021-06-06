@@ -141,7 +141,7 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
             {this.props.link}
           </div>
           <div style={customStyles.colorTableCellValue}>
-            {(item.LinkToSupportMaterial && item.LinkToSupportMaterial.indexOf('http') !== -1)?
+            {(item.LinkToSupportMaterial && this.isValidHttpUrl(item.LinkToSupportMaterial)) ?
               <a href={item.LinkToSupportMaterial} target={'_blank'}>{item.LinkToSupportMaterial}</a>:
             null}
           </div>
@@ -302,6 +302,8 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
       let searchItems = this.state.items.filter(p => ids.indexOf(p.Id) !== -1);
       this.setState({showSearchResults:true,searchResults: searchItems,selectedTitle: null, selectedSecondCategory: null, filteredSecondCategory:[],
         selectedThirdCategory:null, filteredThirdCategory:null,selectedScenario:null, filteredScenario:null,resultRecord:null});
+    } else {
+      this.setState({showSearchResults:false});
     }
   }
   public refreshStyles = () => {
@@ -420,8 +422,8 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
                 <Label disabled>{this.props.secondSupport}</Label>
                 <Label style={{fontSize:21}}>{this.state.resultRecord.SecondTier}</Label>
                 <br/>
-                {(this.state.resultRecord.LinkToSupportMaterial && this.state.resultRecord.LinkToSupportMaterial.includes('http')) && <Label disabled>{this.props.link}</Label>}
-                {(this.state.resultRecord.LinkToSupportMaterial && this.state.resultRecord.LinkToSupportMaterial.includes('http')) && <Label><a target={'_blank'} href={this.state.resultRecord.LinkToSupportMaterial}>{this.state.resultRecord.LinkToSupportMaterial}</a ></Label>}
+                {(this.state.resultRecord.LinkToSupportMaterial && this.isValidHttpUrl(this.state.resultRecord.LinkToSupportMaterial)) && <Label disabled>{this.props.link}</Label>}
+                {(this.state.resultRecord.LinkToSupportMaterial && this.isValidHttpUrl(this.state.resultRecord.LinkToSupportMaterial)) && <Label><a target={'_blank'} href={this.state.resultRecord.LinkToSupportMaterial}>{this.state.resultRecord.LinkToSupportMaterial}</a ></Label>}
                 {/*{(this.state.resultRecord.OtherDetails)&&<Label disabled>Other Details</Label>}*/}
                 {/*{(this.state.resultRecord.OtherDetails)&&<Label style={{fontSize:21}}>{this.state.resultRecord.OtherDetails}</Label>}*/}
               </Stack>:null
@@ -433,7 +435,7 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
                 onShouldVirtualize = {()=>false}
                 items={this.state.searchResults}
                 onRenderCell={this.onRenderCell} /> :
-              <div style={{marginTop:20}}>
+              <div style={{marginTop:20, width:300}}>
                 <MessageBar
                   messageBarType={MessageBarType.error}>
                   Your search did not match any results
@@ -471,5 +473,16 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
       }
     </Stack>
     );
+  }
+  public isValidHttpUrl = (string) => {
+    let url;
+
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false;
+    }
+
+    return url.protocol === "http:" || url.protocol === "https:";
   }
 }
