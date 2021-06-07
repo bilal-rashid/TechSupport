@@ -3,7 +3,7 @@
   "solution": {
     "name": "tech-support-client-side-solution",
     "id": "b6af2b22-d51d-472d-925b-fcc974d38827",
-    "version": "1.0.0.0",
+    "version": "1.0.0.8",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
