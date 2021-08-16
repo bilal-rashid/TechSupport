@@ -20,6 +20,7 @@ const refreshIcon: IIconProps = { iconName: 'Refresh' };
 const ListTitle = 'TechnicalSupport';
 const AdminTitle = 'john.brennan@hpha';
 // const AdminTitle = 'bilal.rashid@slickwhiz';
+// old cdn https://hpeits.sharepoint.com/sites/HPHAAMGHSupport/SiteAssets/technicalsupport/
 var customStyles = {
   tableHeader:{background: '#5B9BD5',
     display: 'table-cell',
@@ -127,26 +128,26 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
             {item.FirstTierSupport}
           </div>
         </div>
-        <div>
-          <div style={customStyles.whiteTableCellKey}>
-            {this.props.secondSupport}
-          </div>
-          <div style={customStyles.whiteTableCellValue}>
-            {item.SecondTierSupport}
-          </div>
-        </div>
+        {/*<div>*/}
+        {/*  <div style={customStyles.whiteTableCellKey}>*/}
+        {/*    {this.props.secondSupport}*/}
+        {/*  </div>*/}
+        {/*  <div style={customStyles.whiteTableCellValue}>*/}
+        {/*    {item.SecondTierSupport}*/}
+        {/*  </div>*/}
+        {/*</div>*/}
         <div style={customStyles.line}></div>
-        <div>
-          <div style={customStyles.colorTableCellKey}>
-            {this.props.link}
-          </div>
-          <div style={customStyles.colorTableCellValue}>
-            {(item.LinkToSupportMaterial && this.isValidHttpUrl(item.LinkToSupportMaterial)) ?
-              <a href={item.LinkToSupportMaterial} target={'_blank'}>{item.LinkToSupportMaterial}</a>:
-            null}
-          </div>
-        </div>
-        <div style={customStyles.line}></div>
+        {/*<div>*/}
+        {/*  <div style={customStyles.colorTableCellKey}>*/}
+        {/*    {this.props.link}*/}
+        {/*  </div>*/}
+        {/*  <div style={customStyles.colorTableCellValue}>*/}
+        {/*    {(item.LinkToSupportMaterial && this.isValidHttpUrl(item.LinkToSupportMaterial)) ?*/}
+        {/*      <a href={item.LinkToSupportMaterial} target={'_blank'}>{item.LinkToSupportMaterial}</a>:*/}
+        {/*    null}*/}
+        {/*  </div>*/}
+        {/*</div>*/}
+        {/*<div style={customStyles.line}></div>*/}
       </div>
     );
   }
@@ -417,13 +418,13 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
                 <Label style={{fontSize:21}}>{this.state.resultRecord.TroubleshootingTips}</Label>
                 <br/>
                 <Label disabled>{this.props.firstSupport}</Label>
-                <Label style={{fontSize:21}}>{this.state.resultRecord.FirstTier}</Label>
+                <Label style={{fontSize:21}}>{this.state.resultRecord.FirstTierSupport}</Label>
                 <br/>
-                <Label disabled>{this.props.secondSupport}</Label>
-                <Label style={{fontSize:21}}>{this.state.resultRecord.SecondTier}</Label>
-                <br/>
-                {(this.state.resultRecord.LinkToSupportMaterial && this.isValidHttpUrl(this.state.resultRecord.LinkToSupportMaterial)) && <Label disabled>{this.props.link}</Label>}
-                {(this.state.resultRecord.LinkToSupportMaterial && this.isValidHttpUrl(this.state.resultRecord.LinkToSupportMaterial)) && <Label><a target={'_blank'} href={this.state.resultRecord.LinkToSupportMaterial}>{this.state.resultRecord.LinkToSupportMaterial}</a ></Label>}
+                {/*<Label disabled>{this.props.secondSupport}</Label>*/}
+                {/*<Label style={{fontSize:21}}>{this.state.resultRecord.SecondTierSupport}</Label>*/}
+                {/*<br/>*/}
+                {/*{(this.state.resultRecord.LinkToSupportMaterial && this.isValidHttpUrl(this.state.resultRecord.LinkToSupportMaterial)) && <Label disabled>{this.props.link}</Label>}*/}
+                {/*{(this.state.resultRecord.LinkToSupportMaterial && this.isValidHttpUrl(this.state.resultRecord.LinkToSupportMaterial)) && <Label><a target={'_blank'} href={this.state.resultRecord.LinkToSupportMaterial}>{this.state.resultRecord.LinkToSupportMaterial}</a ></Label>}*/}
                 {/*{(this.state.resultRecord.OtherDetails)&&<Label disabled>Other Details</Label>}*/}
                 {/*{(this.state.resultRecord.OtherDetails)&&<Label style={{fontSize:21}}>{this.state.resultRecord.OtherDetails}</Label>}*/}
               </Stack>:null
