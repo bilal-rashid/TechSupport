@@ -16,7 +16,7 @@ const textFieldStyles: Partial<ITextFieldStyles> = { fieldGroup: { width: 400 } 
 const stackTokens = { childrenGap: 15 };
 const stackTokensDetails = { childrenGap: 3 };
 const refreshIcon: IIconProps = { iconName: 'Refresh' };
-// const ListTitle = 'HphaSupport';
+// const ListTitle = 'MyList';
 const ListTitle = 'TechnicalSupport';
 const AdminTitle = 'john.brennan@hpha';
 // const AdminTitle = 'bilal.rashid@slickwhiz';
@@ -255,7 +255,7 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
       }
     });
     pnp.sp.web.lists.getByTitle(ListTitle).items.top(4000).select(
-      "Title","SecondaryCategory","ThirdCategory","SpecificIssue","TroubleshootingTips","FirstTierSupport","SecondTierSupport","LinkToSupportMaterial", "Id").
+      "Title","SecondaryCategory","ThirdCategory","SpecificIssue","TroubleshootingTips","FirstTierSupport","SecondTierSupport","Tags", "Id").
     get().then(items => {
       let array = [];
       const unique = new Set(items.map(item => item.Title));
@@ -269,15 +269,34 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
         if (a.text > b.text) { return 1; }
         return 0;
       });
-      let stringArray = [];
+      let stringArrayFirst = [];
+      let stringArraySecond = [];
+      let stringArrayThird = [];
+      let stringArrayFourth = [];
+      let stringArrayFifth = [];
+      let stringArraySixth = [];
+      let stringArraySeventh = [];
       if (items && items.length > 0) {
         items.forEach(item => {
-          stringArray.push({id: item.Id ,text: '' + item.Title + '   ' + item.SecondaryCategory + '   ' + item.ThirdCategory + '   '
-              + item.SpecificIssue + '   ' + item.TroubleshootingTips + '   ' + item.FirstTierSupport + '   '
-              + item.SecondTierSupport + '   ' + item.LinkToSupportMaterial});
+          stringArrayFirst.push({id: item.Id ,text: '' + item.Title});
+          stringArraySecond.push({id: item.Id ,text: '' + item.SecondaryCategory});
+          stringArrayThird.push({id: item.Id ,text: '' + item.ThirdCategory});
+          stringArrayFourth.push({id: item.Id ,text: '' + item.SpecificIssue});
+          stringArrayFifth.push({id: item.Id ,text: '' + item.TroubleshootingTips});
+          stringArraySixth.push({id: item.Id ,text: '' + item.Tags});
+          stringArraySeventh.push({id: item.Id ,text: '' + item.FirstTierSupport + '   '
+              + item.SecondTierSupport});
         });
       }
-      this.setState({stringItems: stringArray,items: items, uniqueTitles: array,resultRecord:null,errorConfig:false});
+      this.setState({
+        stringItemsFirst: stringArrayFirst,
+        stringItemsSecond: stringArraySecond,
+        stringItemsThird: stringArrayThird,
+        stringItemsFourth: stringArrayFourth,
+        stringItemsFifth: stringArrayFifth,
+        stringItemsSixth: stringArraySixth,
+        stringItemsSeventh: stringArraySeventh,
+        items: items, uniqueTitles: array,resultRecord:null,errorConfig:false});
     }).catch(error => {
       this.setState({errorConfig: true});
     });
@@ -295,12 +314,29 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
   }
   public onSearch = (newValue) => {
     if (newValue && newValue.length > 1) {
-      const results = this.state.stringItems.filter(p => p.text.toLowerCase().indexOf(newValue.toLowerCase()) !== -1);
+      const results1 = this.state.stringItemsFirst.filter(p => p.text.toLowerCase().indexOf(newValue.toLowerCase()) !== -1);
+      const results2 = this.state.stringItemsSecond.filter(p => p.text.toLowerCase().indexOf(newValue.toLowerCase()) !== -1);
+      const results3 = this.state.stringItemsThird.filter(p => p.text.toLowerCase().indexOf(newValue.toLowerCase()) !== -1);
+      const results4 = this.state.stringItemsFourth.filter(p => p.text.toLowerCase().indexOf(newValue.toLowerCase()) !== -1);
+      const results5 = this.state.stringItemsFifth.filter(p => p.text.toLowerCase().indexOf(newValue.toLowerCase()) !== -1);
+      const results6 = this.state.stringItemsSixth.filter(p => p.text.toLowerCase().indexOf(newValue.toLowerCase()) !== -1);
+      const results7 = this.state.stringItemsSeventh.filter(p => p.text.toLowerCase().indexOf(newValue.toLowerCase()) !== -1);
       let ids = [];
-      results.forEach(result => {
-        ids.push(result.id);
+      results1.forEach(result => (ids.indexOf(result.id) === -1) ? ids.push(result.id):false);
+      results2.forEach(result => (ids.indexOf(result.id) === -1) ? ids.push(result.id):false);
+      results3.forEach(result => (ids.indexOf(result.id) === -1) ? ids.push(result.id):false);
+      results4.forEach(result => (ids.indexOf(result.id) === -1) ? ids.push(result.id):false);
+      results5.forEach(result => (ids.indexOf(result.id) === -1) ? ids.push(result.id):false);
+      results6.forEach(result => (ids.indexOf(result.id) === -1) ? ids.push(result.id):false);
+      results7.forEach(result => (ids.indexOf(result.id) === -1) ? ids.push(result.id):false);
+      console.log('IDs', ids);
+      let searchItems = [];
+      ids.forEach(id => {
+        const resultItem = this.state.items.filter(p => p.Id === id);
+        if (resultItem && resultItem.length > 0) {
+          searchItems.push(resultItem[0]);
+        }
       });
-      let searchItems = this.state.items.filter(p => ids.indexOf(p.Id) !== -1);
       this.setState({showSearchResults:true,searchResults: searchItems,selectedTitle: null, selectedSecondCategory: null, filteredSecondCategory:[],
         selectedThirdCategory:null, filteredThirdCategory:null,selectedScenario:null, filteredScenario:null,resultRecord:null});
     } else {
