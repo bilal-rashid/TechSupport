@@ -400,49 +400,49 @@ export default class HphaSupport extends React.Component<IHphaSupportProps, IHph
         (this.state && !this.state.errorConfig)?
         <div>
           <Stack horizontal={true} tokens={{ childrenGap: 40 }}>
+            {/*<Stack horizontal={false} tokens={stackTokens}>*/}
+            {/*  <Label style={{fontWeight:'bold', fontSize:14}}>Use Fields Below to narrow down your issue</Label>*/}
+            {/*  <Dropdown*/}
+            {/*    notifyOnReselect = {true}*/}
+            {/*    label={this.props.firstCategory}*/}
+            {/*    selectedKey={this.state && this.state.selectedTitle ? this.state.selectedTitle : undefined}*/}
+            {/*    onChange={this.onChangeFirstCategory}*/}
+            {/*    placeholder="Select an option"*/}
+            {/*    options={this.state && this.state.uniqueTitles && this.state.uniqueTitles.length > 0 ? this.state.uniqueTitles : []}*/}
+            {/*    styles={dropdownStyles}*/}
+            {/*  />*/}
+            {/*  {(this.state && this.state.filteredSecondCategory && this.state.filteredSecondCategory.length > 0)&&<Dropdown*/}
+            {/*    notifyOnReselect = {true}*/}
+            {/*    label={this.props.secondCategory}*/}
+            {/*    selectedKey={this.state && this.state.selectedSecondCategory ? this.state.selectedSecondCategory : undefined}*/}
+            {/*    onChange={this.onChangeSecondCategory}*/}
+            {/*    placeholder="Select an option"*/}
+            {/*    options={this.state && this.state.filteredSecondCategory && this.state.filteredSecondCategory.length > 0 ? this.state.filteredSecondCategory : []}*/}
+            {/*    styles={dropdownStyles}*/}
+            {/*  />}*/}
+            {/*  {(this.state && this.state.filteredThirdCategory && this.state.filteredThirdCategory.length > 0 )&&<Dropdown*/}
+            {/*    notifyOnReselect = {true}*/}
+            {/*    label={this.props.thirdCategory}*/}
+            {/*    selectedKey={this.state && this.state.selectedThirdCategory ? this.state.selectedThirdCategory : undefined}*/}
+            {/*    onChange={this.onChangeThirdCategory}*/}
+            {/*    placeholder="Select an option"*/}
+            {/*    options={this.state && this.state.filteredThirdCategory && this.state.filteredThirdCategory.length > 0 ? this.state.filteredThirdCategory : []}*/}
+            {/*    styles={dropdownStyles}*/}
+            {/*  />}*/}
+            {/*  {(this.state && this.state.filteredScenario && this.state.filteredScenario.length > 0)&&<Dropdown*/}
+            {/*    notifyOnReselect = {true}*/}
+            {/*    label={this.props.issues}*/}
+            {/*    selectedKey={this.state && this.state.selectedScenario ? this.state.selectedScenario : null}*/}
+            {/*    onChange={this.onChangeScenario}*/}
+            {/*    placeholder="Select an option"*/}
+            {/*    options={this.state && this.state.filteredScenario && this.state.filteredScenario.length > 0 ? this.state.filteredScenario : []}*/}
+            {/*    styles={dropdownStyles}*/}
+            {/*  />}*/}
+            {/*</Stack>*/}
+            {/*<Label style={{fontWeight:'bold', fontSize:17, marginTop:70}}>OR</Label>*/}
             <Stack horizontal={false} tokens={stackTokens}>
-              <Label style={{fontWeight:'bold', fontSize:14}}>Use Fields Below to narrow down your issue</Label>
-              <Dropdown
-                notifyOnReselect = {true}
-                label={this.props.firstCategory}
-                selectedKey={this.state && this.state.selectedTitle ? this.state.selectedTitle : undefined}
-                onChange={this.onChangeFirstCategory}
-                placeholder="Select an option"
-                options={this.state && this.state.uniqueTitles && this.state.uniqueTitles.length > 0 ? this.state.uniqueTitles : []}
-                styles={dropdownStyles}
-              />
-              {(this.state && this.state.filteredSecondCategory && this.state.filteredSecondCategory.length > 0)&&<Dropdown
-                notifyOnReselect = {true}
-                label={this.props.secondCategory}
-                selectedKey={this.state && this.state.selectedSecondCategory ? this.state.selectedSecondCategory : undefined}
-                onChange={this.onChangeSecondCategory}
-                placeholder="Select an option"
-                options={this.state && this.state.filteredSecondCategory && this.state.filteredSecondCategory.length > 0 ? this.state.filteredSecondCategory : []}
-                styles={dropdownStyles}
-              />}
-              {(this.state && this.state.filteredThirdCategory && this.state.filteredThirdCategory.length > 0 )&&<Dropdown
-                notifyOnReselect = {true}
-                label={this.props.thirdCategory}
-                selectedKey={this.state && this.state.selectedThirdCategory ? this.state.selectedThirdCategory : undefined}
-                onChange={this.onChangeThirdCategory}
-                placeholder="Select an option"
-                options={this.state && this.state.filteredThirdCategory && this.state.filteredThirdCategory.length > 0 ? this.state.filteredThirdCategory : []}
-                styles={dropdownStyles}
-              />}
-              {(this.state && this.state.filteredScenario && this.state.filteredScenario.length > 0)&&<Dropdown
-                notifyOnReselect = {true}
-                label={this.props.issues}
-                selectedKey={this.state && this.state.selectedScenario ? this.state.selectedScenario : null}
-                onChange={this.onChangeScenario}
-                placeholder="Select an option"
-                options={this.state && this.state.filteredScenario && this.state.filteredScenario.length > 0 ? this.state.filteredScenario : []}
-                styles={dropdownStyles}
-              />}
-            </Stack>
-            <Label style={{fontWeight:'bold', fontSize:17, marginTop:70}}>OR</Label>
-            <Stack horizontal={false} tokens={stackTokens}>
-              <Label style={{fontWeight:'bold', fontSize:14}}>Use Keywords to find your solution</Label>
-              <div style={{marginTop:42}}>
+              <Label style={{fontWeight:'bold', fontSize:14}}>Do a keyword search to find a support solution:</Label>
+              <div style={{marginTop:20}}>
                 <SearchBox style={{width:270}} placeholder="Search" onSearch={this.onSearch} />
               </div>
             </Stack>
